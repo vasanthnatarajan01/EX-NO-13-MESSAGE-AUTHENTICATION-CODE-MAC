@@ -1,5 +1,7 @@
 # EX-NO-13-MESSAGE-AUTHENTICATION-CODE-MAC
 
+## Register No: 212224110060
+
 ## AIM:
 To implement MESSAGE AUTHENTICATION CODE(MAC)
 
@@ -26,9 +28,70 @@ To implement MESSAGE AUTHENTICATION CODE(MAC)
 
 ## Program:
 
+```c
+
+ #include <stdio.h>
+#include <string.h>
+
+#define MAC_SIZE 32 // Define MAC size in bytes
+
+// Function to compute a simple MAC using XOR
+void computeMAC(const char *key, const char *message, char *mac) {
+    int key_len = strlen(key);
+    int msg_len = strlen(message);
+    
+    // XOR the key and message, repeating if necessary
+    for (int i = 0; i < MAC_SIZE; i++) {
+        mac[i] = key[i % key_len] ^ message[i % msg_len]; // Simple XOR operation
+    }
+    mac[MAC_SIZE] = '\0'; // Null-terminate the MAC string
+}
+
+int main() {
+    char key[100], message[100];
+    char mac[MAC_SIZE + 1]; // Buffer for MAC (+1 for null terminator)
+    char receivedMAC[MAC_SIZE + 1]; // Buffer for input of received MAC
+
+    // Step 1: Input secret key
+    printf("Enter the secret key: ");
+    scanf("%s", key);
+
+    // Step 2: Input the message
+    printf("Enter the message: ");
+    scanf("%s", message);
+
+    // Step 3: Compute the MAC
+    computeMAC(key, message, mac);
+
+    // Step 4: Display the computed MAC in hexadecimal
+    printf("Computed MAC (in hex): ");
+    for (int i = 0; i < MAC_SIZE; i++) {
+        printf("%02x", (unsigned char)mac[i]); // Print each byte as hex
+    }
+    printf("\n");
+
+    // Step 5: Input the received MAC (for verification)
+    printf("Enter the received MAC (as hex): ");
+    for (int i = 0; i < MAC_SIZE; i++) {
+        scanf("%02hhx", &receivedMAC[i]);
+    }
+
+    // Compare the computed MAC with the received MAC
+    if (memcmp(mac, receivedMAC, MAC_SIZE) == 0) {
+        printf("MAC verification successful. Message is authentic.\n");
+    } else {
+        printf("MAC verification failed. Message is not authentic.\n");
+    }
+
+    return 0;
+}
+
+```
 
 
 ## Output:
+
+<img width="1417" height="879" alt="Screenshot 2026-09-03 at 5 04 29 PM" src="https://github.com/user-attachments/assets/55b1eb20-d5b1-428d-b6e1-e2b616448c67" />
 
 
 ## Result:
